@@ -1,0 +1,24 @@
+body{
+    font-family: 'Hind', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.navigation-bar{
+    height: 60px;
+    background-color:rgb(73, 73, 223);
+    display: flex;
+    justify-content: space-between;
+}
+.logo{
+    opacity: 0.6;
+    justify-self: flex-start;
+    align-self: center;
+    margin:80px ;
+    font-size: 16px;
+}
+.user{
+    justify-self: flex-end;
+    align-self: center;
+    margin:100px;
+    display: flex;
+}
