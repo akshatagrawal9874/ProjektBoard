@@ -43,3 +43,11 @@ body{
     border-top: 1px solid whitesmoke;
     box-shadow: 1px 1px 1px blanchedalmond;
 }
+.box{
+    box-sizing: border-box;
+    border-radius: 30px;
+    margin: 30px 30px 30px;
+    height: 70vh;
+    border-style: solid;
+    border-width: 1px;
+    border-color: gray;}
