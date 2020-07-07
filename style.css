@@ -126,6 +126,8 @@ align-items: center;
 ul{
     list-style: none;
     padding: 0;
+    overflow-y: scroll;
+
 }
 
 ul li{
