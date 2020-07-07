@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projekt Board</title>
+
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+
+
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+    <div class="loginbox">
+        <div class="inputs">
+            <input type="email" class="input" id="userEmail" name="userEmail" placeholder="Enter Email Address" autocomplete="email">
+            <input type="password" class="input" id="userPass" name="userPass" placeholder="Enter Password" autocomplete="current-password">
+        </div>
+        <div class="buttons">
+            <!-- problem : logInBtn is redirecting unnecessarily -->
+            <button class="btn primary" id="logInBtn" onclick="googleSignIn()">Log In With Google!</button>
+            <button class="btn secondary" id="signUpBtn">Sign Up!</button>
+        </div>
+    </div>
+</body>
+<script src="./js/AppAuth.js"></script>
+
+</html>
