@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Karla&display=swap" rel="stylesheet">    
     <script src="https://kit.fontawesome.com/6167bea25e.js" crossorigin="anonymous"></script>
+    <script src="/jqueryui/jquery.js"></script>
+    <script src="/jqueryui/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#list-1").sortable({connectWith:"#list-2,#list-3"});
+            $("#list-2").sortable({connectWith:"#list-1,#list3"});
+            $("#list-3").sortable({connectWith:"#list-1,#list2"});
+        });
+    </script>
 
 </head>
 <body>
@@ -39,14 +48,14 @@
         </div>
 
         <div class="list-1">
-            <ul id="list-1">
+            <ol id="list-1">
                 <li>
                     hey
                 </li>
                 <li>
 
                 </li>
-            </ul>
+            </ol>
         </div>
     
     </div>
@@ -61,14 +70,14 @@
             </div> 
             
         <div class="list-2">
-            <ul id="list-2">
+            <ol id="list-2">
                 <li>
                     
                 </li>
                 <li>
 
                 </li>
-            </ul>
+            </ol>
         </div> 
 
         </div>
@@ -83,14 +92,14 @@
             </div>
         </div> 
         <div class="list-3">
-            <ul id="list-3">
+            <ol id="list-3">
                 <li>
                     
                 </li>
                 <li>
 
                 </li>
-            </ul>
+            </ol>
         </div> 
     </div>
 </div>
