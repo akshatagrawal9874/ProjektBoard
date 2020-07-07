@@ -1,6 +1,5 @@
 body{
-    font-family: 'Hind', sans-serif;
-    font-weight: 100;
+    font-family: 'Karla', sans-serif;    font-weight: 100;
     margin: 0;
     padding: 0;
     display: flex;
@@ -28,6 +27,11 @@ body{
     align-self: center;
     margin:80px;
     display: flex;
+}
+.img-user{
+    margin-top: 5px;
+    margin-right: 5px;
+    align-self: center;
 }
 .add-tasks{
     margin-top: 50px;
@@ -109,4 +113,15 @@ align-items: center;
 }
 .stage h3{
     opacity: 0.5;
+}
+ul{
+    list-style: none;
+    padding: 0;
+}
+
+ul li{
+    margin: 10px 10px 10px;
+    box-sizing: border-box;
+    box-shadow: 0px 5px 2px whitesmoke;
+    height: 50px;
 }
