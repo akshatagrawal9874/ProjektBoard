@@ -2,10 +2,12 @@ body{
     font-family: 'Hind', sans-serif;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
 }
 .navigation-bar{
     height: 60px;
-    background-color:rgb(73, 73, 223);
+    background-color:rgb(23, 137, 243);
     display: flex;
     justify-content: space-between;
 }
@@ -13,12 +15,31 @@ body{
     opacity: 0.6;
     justify-self: flex-start;
     align-self: center;
-    margin:80px ;
+    margin-left:60px ;
+    width: 50%;
     font-size: 16px;
+}
+.logo h1{
+    width: 100%;
 }
 .user{
     justify-self: flex-end;
     align-self: center;
-    margin:100px;
+    margin:80px;
     display: flex;
+}
+.add-tasks{
+    margin-top: 50px;
+    align-self: center;
+    justify-self: center;
+}
+.add-tasks input{
+    box-sizing: border-box;
+    width: 400px;
+    height: 40px;
+    border-radius: 30px;
+    border: none;
+    border-bottom: 1px solid  whitesmoke; 
+    border-top: 1px solid whitesmoke;
+    box-shadow: 1px 1px 1px blanchedalmond;
 }
