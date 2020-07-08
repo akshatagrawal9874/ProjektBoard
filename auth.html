@@ -1,0 +1,67 @@
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projekt Board</title>
+
+
+    <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
+    <!-- Material Design Theming -->
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+
+    <link rel="stylesheet" href="./css/auth.css">
+
+
+</head>
+
+<body>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+
+    <script src="./js/AppAuth.js"></script>
+
+
+
+    <button onclick="document.getElementById('modallogin').style.display='block'" class="btn primary">Login</button>
+
+    <div id="modallogin" class="modal">
+
+        <div class="modal-content  loginbox">
+            <span onclick="document.getElementById('modallogin').style.display='none'" class="close" title="Close Modal">&times;</span>
+
+
+
+            <label for="email"></label>
+            <input type="email" placeholder="Enter Email" name="email" class="input" id="email" required>
+
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="pass" class="input" id="pass" required>
+
+            <button type="submit" class="btn primary" id="log-in">Log In</button>
+
+            <div class="buttons">
+                <button type="button " class="btn primary " id="sign-up">Sign Up</button>
+                <button type="button " class="btn secondary " id="verify-email">Send Email Verification</button>
+                <button class="psw btn secondary" id="pass-reset">Forgot password?</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        var modal = document.getElementById('modallogin');
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none ";
+            }
+        }
+    </script>
+
+
+
+</body>
+
+</html>
