@@ -11,9 +11,8 @@
     <script src="/jqueryui/jquery-ui.js"></script>
     <script>
         $(document).ready(function(){
-            $("#list-1").sortable({connectWith:"#list-2,#list-3"});
-            $("#list-2").sortable({connectWith:"#list-1,#list3"});
-            $("#list-3").sortable({connectWith:"#list-1,#list2"});
+            $('#list-1,#list-2,#list-3').sortable({connectWith:'#list-1,#list-2,#list-3'});
+
         });
     </script>
 
@@ -34,7 +33,7 @@
 </nav>
 <div class="add-tasks">
     <i class="fa fa-plus-circle" aria-hidden="true"></i>
-    <input type="text" placeholder=" ADD A NEW TASK">
+    <input type="text" placeholder=" ADD A NEW TASK" id="input-text" onkeydown="check(this)">
 </div>
 <div class="box">
     <div class="box1">
@@ -48,14 +47,9 @@
         </div>
 
         <div class="list-1">
-            <ol id="list-1">
-                <li>
-                    hey
-                </li>
-                <li>
-
-                </li>
-            </ol>
+            <ul id="list-1">
+               
+            </ul>
         </div>
     
     </div>
@@ -70,14 +64,9 @@
             </div> 
             
         <div class="list-2">
-            <ol id="list-2">
-                <li>
-                    
-                </li>
-                <li>
-
-                </li>
-            </ol>
+            <ul id="list-2">
+               
+            </ul>
         </div> 
 
         </div>
@@ -92,17 +81,13 @@
             </div>
         </div> 
         <div class="list-3">
-            <ol id="list-3">
-                <li>
-                    
-                </li>
-                <li>
-
-                </li>
-            </ol>
+            <ul id="list-3">
+              
+            </ul>
         </div> 
     </div>
 </div>
 </body>
+<script src="page.js"></script>
 
 </html>
