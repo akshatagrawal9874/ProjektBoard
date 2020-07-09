@@ -20,8 +20,8 @@ function toggleSignIn() {
         firebase.auth().signOut();
         // [END signout]
     } else {
-        var email = document.getElementById('email').value;
-        var pass = document.getElementById('pass').value;
+        var email = document.getElementById('email-in').value;
+        var pass = document.getElementById('pass-in').value;
         if (email.length < 4) {
             alert('Please enter an email address.');
             return;
@@ -51,12 +51,20 @@ function toggleSignIn() {
     document.getElementById('log-in').disabled = true;
 }
 
+//image file into storage
+let file = {};
+
+function chooseFile(e) {
+    file = e.target.files[0];
+
+}
+
 /**
  * Handles the sign up button press.
  */
 function handleSignUp() {
-    var email = document.getElementById('email').value;
-    var pass = document.getElementById('pass').value;
+    var email = document.getElementById('email-up').value;
+    var pass = document.getElementById('pass-up').value;
     if (email.length < 4) {
         alert('Please enter an email address.');
         return;
@@ -67,21 +75,29 @@ function handleSignUp() {
     }
     // Create user with email and pass.
     // [START createwithemail]
-    firebase.auth().createUserWithEmailAndPassword(email, pass).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // [START_EXCLUDE]
-        if (errorCode == 'auth/weak-password') {
-            alert('The password is too weak.');
-        } else {
-            alert(errorMessage);
-        }
-        console.log(error);
-        // [END_EXCLUDE]
-    });
+    firebase.auth().createUserWithEmailAndPassword(email, pass)
+        .then(auth => {
+            firebase.storage().ref('user/' + auth.user.uid + '/profile.jpg').put(file).then(function() {
+                console.log("uploaded");
+            })
+        })
+        .catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // [START_EXCLUDE]
+            if (errorCode == 'auth/weak-password') {
+                alert('The password is too weak.');
+            } else {
+                alert(errorMessage);
+            }
+            console.log(error);
+            // [END_EXCLUDE]
+        });
     // [END createwithemail]
 }
+
+
 
 /**
  * Sends an email verification to the user.
@@ -99,7 +115,7 @@ function sendEmailVerification() {
 }
 
 function sendPasswordReset() {
-    var email = document.getElementById('email').value;
+    var email = document.getElementById('email-in').value;
     // [START sendpasswordemail]
     firebase.auth().sendPasswordResetEmail(email).then(function() {
         // Password Reset Email Sent!

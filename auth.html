@@ -20,6 +20,8 @@
 <body>
     <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js"></script>
+
 
     <script src="./js/AppAuth.js"></script>
 
@@ -29,24 +31,46 @@
 
     <div id="modallogin" class="modal">
 
-        <div class="modal-content  loginbox">
+        <div class="modal-content ">
             <span onclick="document.getElementById('modallogin').style.display='none'" class="close" title="Close Modal">&times;</span>
-
-
-
-            <label for="email"></label>
-            <input type="email" placeholder="Enter Email" name="email" class="input" id="email" required>
-
-            <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="pass" class="input" id="pass" required>
-
-            <button type="submit" class="btn primary" id="log-in">Log In</button>
-
             <div class="buttons">
-                <button type="button " class="btn primary " id="sign-up">Sign Up</button>
-                <button type="button " class="btn secondary " id="verify-email">Send Email Verification</button>
-                <button class="psw btn secondary" id="pass-reset">Forgot password?</button>
+                <button type="button " class="btn secondary " id="log-in-btn" onclick="togglestate(this)">Log In</button>
+                <button type="button " class="btn primary  " id="sign-up-btn" onclick="togglestate(this)">Sign Up</button>
             </div>
+
+
+            <div id="loginbox" class="box">
+                <label for="email"></label>
+                <input type="email" placeholder="Enter Email" name="email" class="input" id="email-in" required>
+
+                <label for="psw"><label>
+                <input type="password" placeholder="Enter Password" name="pass" class="input" id="pass-in" required>
+                <div class="buttons-btm">
+                    <button type="submit" class="btn primary" id="log-in">Log In</button>
+                    <button class="psw btn secondary" id="pass-reset">Forgot password?</button>
+                </div>
+
+
+            </div>
+
+
+            <div id="signupbox" class="box">
+                <input type="text" placeholder="Enter Name" name="name" class="input" id="name" >
+                <label for="email"></label>
+                <input type="email" placeholder="Enter Email" name="email" class="input" id="email-up" required>
+                <label for="file" style="margin: 0 2rem;"><b>Choose Profile Image:</b></label>
+                <input type="file" class="input" onchange="chooseFile(event)">
+                <label for="psw"></label>
+                <input type="password" placeholder="Enter Password" name="pass" class="input" id="pass-up" required>
+
+                <div class="buttons-btm">
+                    <button type="button " class="btn primary " id="sign-up">Sign Up</button>
+                    <button class=" btn secondary psw" id="verify-email">Send Verification Email</button>
+                </div>
+
+            </div>
+
+
         </div>
     </div>
 
@@ -56,6 +80,35 @@
         window.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = "none ";
+            }
+        }
+        const signupbtn = document.getElementById("sign-up-btn");
+        const loginbtn = document.getElementById("log-in-btn");
+        const loginbox = document.getElementById("loginbox");
+        const signupbox = document.getElementById('signupbox');
+
+
+        function togglestate(id) {
+            console.log(id)
+            if (id == loginbtn) {
+
+                loginbtn.classList.remove("primary");
+                loginbtn.classList.add("secondary");
+                loginbox.style.display = "unset";
+                loginbox.style.opacity = "1";
+                signupbtn.classList.add("primary");
+                signupbtn.classList.remove("secondary");
+                signupbox.style.display = "none";
+                signupbox.style.opacity = "0";
+            } else {
+                signupbtn.classList.remove("primary");
+                signupbtn.classList.add("secondary");
+                signupbox.style.display = "unset";
+                signupbox.style.opacity = "1";
+                loginbtn.classList.add("primary");
+                loginbtn.classList.remove("secondary");
+                loginbox.style.display = "none";
+                loginbox.style.opacity = "0";
             }
         }
     </script>
