@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="taskstyle.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Document</title>
 </head>
@@ -57,8 +56,7 @@
             getData();
         }
         // Get a reference to the database service
-        function getData() 
-        {
+        function getData() {
             un_task_con = document.getElementsByClassName("container")[0];
             un_task_con.innerHTML = "";
             task_array = [];
@@ -108,22 +106,23 @@
 
                     //type.innerHTML = task_type;
                     //task Tools
-                     task_tool = document.createElement('div');
+
+                    task_tool = document.createElement('div');
                     task_tool.setAttribute('id', 'task_tool');
-                     task_done_button = document.createElement('button');
+                    task_done_button = document.createElement('button');
                     task_done_button.setAttribute('id', 'task_done_button');
                     task_done_button.setAttribute('onclick', "task_done(this.parentElement.parentElement, this.parentElement)");
-                     fa_done = document.createElement('i');
+                    fa_done = document.createElement('i');
                     fa_done.setAttribute('class', 'fa fa-check');
-                     task_edit_button = document.createElement('button');
+                    task_edit_button = document.createElement('button');
                     task_edit_button.setAttribute('id', 'task_edit_button');
                     task_edit_button.setAttribute('onclick', "task_edit(this.parentElement.parentElement, this)");
-                     fa_edit = document.createElement('i');
+                    fa_edit = document.createElement('i');
                     fa_edit.setAttribute('class', 'fa fa-pencil');
-                     task_delete_button = document.createElement('button');
+                    task_delete_button = document.createElement('button');
                     task_delete_button.setAttribute('id', 'task_delete_button');
                     task_delete_button.setAttribute('onclick', "task_delete(this.parentElement.parentElement)");
-                     fa_delete = document.createElement('i');
+                    fa_delete = document.createElement('i');
                     fa_delete.setAttribute('class', 'fa fa-trash');
 
                     un_task_con.append(task_container);
@@ -144,8 +143,7 @@
                 // document.getElementById("data").innerHTML=task_t+" \n "+task_td+" \n "+task_date+" \n "+task_type;
             });
         }
-        function create_finished_task() 
-        {
+        function create_finished_task() {
             finished_task_container = document.getElementsByClassName("container")[1];
             finished_task_container.innerHTML = "";
             finished_task_array = [];
@@ -162,7 +160,7 @@
                     task_type = finished_task_array[i][3];
                     task_key = finished_task_array[i][4];
 
-                   let task_container = document.createElement("div");
+                    let task_container = document.createElement("div");
                     task_container.setAttribute("class", "task_container");
                     task_container.setAttribute("data-key", task_key);
 
@@ -177,7 +175,7 @@
                     let date = document.createElement('p');
                     date.setAttribute('id', 'task_date');
                     date.setAttribute('contenteditable', false);
-                    date.innerHTML ="Date : " + task_date + "<br>" + " Type : " + task_type;
+                    date.innerHTML = "Date : " + task_date + "<br>" + " Type : " + task_type;
 
 
                     // TASK TOOLS
@@ -200,8 +198,7 @@
             });
         }
 
-        function task_done(task, task_tool) 
-        {
+        function task_done(task, task_tool) {
 
             finished_task_container = document.getElementsByClassName("container")[1];
             task.removeChild(task_tool);
@@ -210,8 +207,8 @@
             var task_obj = {
                 title: task.childNodes[0].childNodes[0].innerHTML,
                 date: task.childNodes[0].childNodes[2].innerHTML,
-                description:task.childNodes[0].childNodes[1].innerHTML,
-                type:task.childNodes[0].childNodes[3].innerHTML,
+                description: task.childNodes[0].childNodes[1].innerHTML,
+                type: task.childNodes[0].childNodes[3].innerHTML,
                 key: task.childNodes[0].childNodes[4].innerHTML
 
             };
@@ -226,8 +223,7 @@
             create_finished_task();
         }
 
-        function task_edit(task, edit_button) 
-        {
+        function task_edit(task, edit_button) {
 
             edit_button.setAttribute('id', 'task_edit_button_editing');
             edit_button.setAttribute('onclick', 'finish_edit(this.parentElement.parentElement, this)');
@@ -237,25 +233,24 @@
             title.setAttribute('id', 'title_editing');
             title.focus();
 
-            let description=task.childNodes[0].childNodes[1];
-            description.setAttribute('contenteditable',true);
-            description.setAttribute('id','title_editing');
-             description.focus();
+            let description = task.childNodes[0].childNodes[1];
+            description.setAttribute('contenteditable', true);
+            description.setAttribute('id', 'title_editing');
+            description.focus();
 
             let date = task.childNodes[0].childNodes[2];
             date.setAttribute('contenteditable', true);
             date.setAttribute('id', 'date_editing');
             date.focus();
-            
-            let type=task.childNodes[0].childNodes[3];
-            type.setAttribute('contenteditable',true);
-            type.setAttribute('id','date_editing');
+
+            let type = task.childNodes[0].childNodes[3];
+            type.setAttribute('contenteditable', true);
+            type.setAttribute('id', 'date_editing');
             type.focus();
 
         }
 
-        function finish_edit(task, edit_button)
-         {
+        function finish_edit(task, edit_button) {
 
             edit_button.setAttribute('id', 'task_edit_button');
             edit_button.setAttribute('onclick', 'task_edit(this.parentElement.parentElement, this)');
@@ -268,13 +263,13 @@
             date.setAttribute('contenteditable', false);
             date.setAttribute('id', 'task_date');
 
-            let description=task.childNodes[0].childNodes[1];
-            description.setAttribute('contenteditable',false);
-            description.setAttribute('id','title_editing');
-            
-            let type=task.childNodes[0].childNodes[3];
-            type.setAttribute('contenteditable',false);
-            type.setAttribute('id','date_editing');
+            let description = task.childNodes[0].childNodes[1];
+            description.setAttribute('contenteditable', false);
+            description.setAttribute('id', 'title_editing');
+
+            let type = task.childNodes[0].childNodes[3];
+            type.setAttribute('contenteditable', false);
+            type.setAttribute('id', 'date_editing');
 
             // change in firebase to
 
@@ -287,8 +282,8 @@
                 key: task.childNodes[0].childNodes[4].innerHTML
             };
 
-             console.log(key);
-             console.log(task_obj);
+            console.log(key);
+            console.log(task_obj);
             var updates = {};
 
             updates['/users/' + key] = task_obj;
@@ -296,20 +291,30 @@
             firebase.database().ref().update(updates);
         }
 
-        function task_delete(task) 
-        {
-            var key = firebase.database().ref().child("users").push().key;
-            task_to_remove = firebase.database().ref("users/" + key);
-            task_to_remove.remove();
-            // remove from html view or whatevesss
+        function task_delete(task) {
+            console.log(task);
+            //task.stopPropagation();
+            const key = task.getAttribute("data-key");
+            //task_to_remove = firebase.database().ref('users/'+ key);
             console.log(key);
-            console.log(task.remove());
+            let userRef = firebase.database().ref().child("/users/"+key);
+            userRef.remove().then(function () {
+                console.log("Remove succeeded.")
+            })
+                .catch(function (error) {
+                    console.log("Remove failed: " + error.message)
+                });
+            //return firebase.database().ref('/users/'+ key).remove();
+            // remove from html view or whatevesss
+
+            //task.remove();
         }
 
 
         function task_finished_delete(task) {
-            key = task.getAttribute("data-key");
-            task_to_remove = firebase.database().ref("finished_task/" + key);
+            //task.stopPropagation();
+            const key = task.getAttribute("data-key");
+            task_to_remove = firebase.database().ref().child("finished_task/" + key);
             task_to_remove.remove();
             // remove from html view or whatevesss
             console.log(key);
@@ -358,80 +363,4 @@
     </div>
 </body>
 
-=======
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProjektBoard</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Karla&display=swap" rel="stylesheet">    
-    <script src="https://kit.fontawesome.com/6167bea25e.js" crossorigin="anonymous"></script>
-
-</head>
-<body>
-<nav class="navigation-bar">
-    <div class="logo">
-        <h1>Projekt Board</h1>
-    </div>
-    <div class="user">
-        <div class="img-user">
-            <img src="/img/account_circle-24px.svg" alt="">
-        </div>
-        <div class="username">
-           <h4> User</h4>
-        </div>     
-    </div>
-</nav>
-<div class="add-tasks">
-    <i class="fa fa-plus-circle" aria-hidden="true"></i>
-    <input type="text" placeholder=" ADD A NEW TASK">
-</div>
-<div class="box">
-    <div class="box1">
-        <div class="heading">
-            <div class="image-pen">
-                <i class="fa fa-pencil" aria-hidden="true"></i>
-            </div>
-            <div class="stage">
-                <h3>BACKLOGS</h3>
-            </div>
-        </div>
-
-        <div class="list-1">
-            <ul>
-                <li>
-                    
-                </li>
-                <li>
-
-                </li>
-            </ul>
-        </div>
-    
-    </div>
-    <div class="box2">
-        <div class="heading">
-                <div class="image-pen">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </div>
-                <div class="stage">
-                    <h3>IN PROGRESS</h3>
-                </div>
-            </div>  
-        </div>
-
-    <div class="box3">
-        <div class="heading">
-            <div class="image-pen">
-                <i class="fa fa-pencil" aria-hidden="true"></i>
-            </div>
-            <div class="stage">
-                <h3>ACCOMPLISHED</h3>
-            </div>
-        </div> 
-        
-    </div>
-        
-</div>
->>>>>>> c247eb573a56b9b2130a396e8b127418cce4ed43
 </html>
