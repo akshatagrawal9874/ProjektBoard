@@ -330,21 +330,21 @@ body {
     opacity: 0.5;
 }
 
-#task_data {
+#task_data{
     float: left;
-    width: 50%;
+    width: 30%;
     height: auto;
     margin-top: 25px;
     margin-left: 10px;
-}
 
-#task_tool {
-    display: flex;
+  }
+ 
+  #task_tool{
     height: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    float: right;
+    margin-top: 35px;
+  }
 
 #task_done_button {
     float: right;
