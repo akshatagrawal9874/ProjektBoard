@@ -10,26 +10,6 @@
   <link rel="stylesheet" href="finish_task.css" type="text/css">
   <link href="https://fonts.googleapis.com/css2?family=Karla&display=swap" rel="stylesheet">
   <script src="https://kit.fontawesome.com/6167bea25e.js" crossorigin="anonymous"></script>
-  <script src="/jqueryui/jquery.js"></script>
-  <script src="/jqueryui/jquery-ui.js"></script>
-  <script>
-    $(document).ready(function () {
-      $('.container,.container,.container').sortable({ connectWith: '.container,.container,.container' });
-    });
-  </script>
-  <script>
-    function display(this) {
-      var x = document.getElementById("SelectA").value;
-
-      if (x == "1") {
-        task_done(this.parentElement.parentElement, this.parentElement);
-      }
-      else if (x == "2") {
-        task_done(this.parentElement.parentElement, this.parentElement);
-      }
-
-    }
-  </script>
 </head>
 
 <body onload="create_tasktodo_task(), create_accomplished_task(),create_progress_task()">
@@ -73,9 +53,9 @@
         // our boxes have data and we take database
         var key = firebase.database().ref().child("task_to_do").push().key;
         var task = {
-          title: input_box.value.toUpperCase(),
+          title: input_box.value,
           date: input_date.value,
-          desc: input_desc.value.toUpperCase(),
+          desc: input_desc.value,
           key: key
         };
 
@@ -83,9 +63,6 @@
         updates["/task_to_do/" + key] = task;
         firebase.database().ref().update(updates);
         create_tasktodo_task();
-      document.getElementById("input_box").value='';
-      document.getElementById("input_date").value='';
-      document.getElementById("input_desc").value='';
       }
     }
 
@@ -265,10 +242,10 @@
           task_data.append(date);
 
           task_container.append(task_tool);
-          task_tool.append(task_progress_button);
-          task_progress_button.append(fa_progress);
           task_tool.append(task_t_button);
           task_t_button.append(fa_done);
+          task_tool.append(task_progress_button);
+          task_progress_button.append(fa_progress);
           task_tool.append(task_edit_button);
           task_edit_button.append(fa_edit);
           task_tool.append(task_delete_button);
@@ -665,7 +642,7 @@
         <div class="image-pen">
           <i class="fa fa-pencil" aria-hidden="true"></i>
         </div>
-        <p class="header"> IN PROGRESS </p>
+        <p class="header"> In Progress </p>
       </div>
       <div class="container">
 
