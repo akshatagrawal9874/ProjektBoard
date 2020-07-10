@@ -282,11 +282,27 @@ body {
     box-shadow: 0px 5px 2px whitesmoke;
 }
 
+.box3 {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    border-radius: 30px;
+    margin: 50px 30px 30px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: whitesmoke;
+    height: 400px;
+    box-shadow: 0px 5px 2px whitesmoke;
+}
+
 .container {
+    display: flex;
+    flex-direction: column;
     float: left;
     margin-left: 5%;
     margin-bottom: 40px;
-    background-color: whitesmoke;
+    background-color: white;
     width: 90%;
     height: 330px;
     overflow-y: scroll;
@@ -296,16 +312,18 @@ body {
 .task_container {
     background-color: #fff;
     width: 90%;
-    height: 80px;
-    margin: 0 auto;
+    height: 100px;
     margin-bottom: 10px;
     margin-top: 10px;
     overflow-y: scroll;
     overflow-x: hidden;
+    box-sizing: border-box;
+    border-radius: 20px;
+    box-shadow: 0px 5px 2px whitesmoke;
 }
 
 .task_container:hover {
-    box-shadow: -2px 2px #75b79e;
+    transform: translateY(-4px);
 }
 
 .task_container.dragging {
@@ -313,16 +331,15 @@ body {
 }
 
 #task_data {
-    display: inline-block;
     float: left;
     width: 50%;
-    height: 100%;
+    height: auto;
+    margin-top: 25px;
     margin-left: 10px;
 }
 
 #task_tool {
-    display: inline-block;
-    float: right;
+    display: flex;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -406,50 +423,44 @@ body {
 }
 
 #task_title {
-    background-color: #fff;
-    font-family: monospace;
-    font-weight: bold;
+    font-family: 'Karla', sans-serif;
+    font-weight: 100;
     font-size: 15px;
-    float: left;
-    width: 100%;
+    width: 150%;
 }
 
 #title_editing {
     background-color: #fff;
-    font-family: monospace;
-    font-weight: bold;
+    font-family: 'Karla', sans-serif;
+    font-weight: 100;
     font-size: 15px;
-    float: left;
     width: 100%;
-    border-bottom: 1px solid #ffed83;
+    border-bottom: 1px solid red;
     outline: none;
 }
 
 #title_editing:focus {
-    border-bottom: 3px solid #ffed83;
+    border-bottom: 3px solid red;
 }
 
 #date_editing {
     background-color: #fff;
-    font-family: monospace;
-    font-weight: lighter;
+    font-family: 'Karla', sans-serif;
+    font-weight: 100;
     font-size: 12px;
-    float: left;
     width: 100%;
-    border-bottom: 1px solid #ffed83;
+    border-bottom: 1px solid red;
     outline: none;
 }
 
 #date_editing:focus {
-    border-bottom: 3px solid #ffed83;
+    border-bottom: 3px solid red;
 }
 
 #task_date {
-    background-color: #fff;
     font-family: monospace;
     color: grey;
     font-size: 12px;
-    float: left;
     margin: 0;
     margin-bottom: 5px;
     width: 100%;
