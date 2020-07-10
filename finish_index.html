@@ -73,9 +73,9 @@
         // our boxes have data and we take database
         var key = firebase.database().ref().child("task_to_do").push().key;
         var task = {
-          title: input_box.value,
+          title: input_box.value.toUpperCase(),
           date: input_date.value,
-          desc: input_desc.value,
+          desc: input_desc.value.toUpperCase(),
           key: key
         };
 
@@ -83,6 +83,9 @@
         updates["/task_to_do/" + key] = task;
         firebase.database().ref().update(updates);
         create_tasktodo_task();
+      document.getElementById("input_box").value='';
+      document.getElementById("input_date").value='';
+      document.getElementById("input_desc").value='';
       }
     }
 
@@ -662,7 +665,7 @@
         <div class="image-pen">
           <i class="fa fa-pencil" aria-hidden="true"></i>
         </div>
-        <p class="header"> In Progress </p>
+        <p class="header"> IN PROGRESS </p>
       </div>
       <div class="container">
 
