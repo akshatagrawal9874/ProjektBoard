@@ -81,47 +81,18 @@
                     desc: input_desc.value.toUpperCase(),
                     key: key
                 };
-                // Initialize Firebase
-                firebase.initializeApp(firebaseConfig);
-                firebase.analytics();
 
-                function add_task() {
-                    input_box = document.getElementById("input_box");
-                    input_date = document.getElementById("input_date");
-                    input_desc = document.getElementById("input_desc");
-                    // ttd = document.getElementById('auto_drop').
-                    // console.log(ttd)
-                    if (input_box.value.length != 0 && input_date.value.length != 0) {
-                        // our boxes have data and we take database
-                        var key = firebase.database().ref().child("unfinished_task").push().key;
-                        var task = {
-                            title: input_box.value,
-                            date: input_date.value,
-                            desc: input_desc.value,
-                            key: key
-                        };
-
-                        var updates = {};
-                        updates["/unfinished_task/" + key] = task;
-                        firebase.database().ref().update(updates);
-                        create_unfinished_task();
-
-                        input_box.value = "";
-                        input_date.value = "";
-                        input_desc.value = "";
-
-                    }
-                }
-
-                var updates = {};
-                updates["/task_to_do/" + key] = task;
-                firebase.database().ref().update(updates);
-                create_tasktodo_task();
-                document.getElementById("input_box").value = '';
-                document.getElementById("input_date").value = '';
-                document.getElementById("input_desc").value = '';
             }
+
+            var updates = {};
+            updates["/task_to_do/" + key] = task;
+            firebase.database().ref().update(updates);
+            create_tasktodo_task();
+            document.getElementById("input_box").value = '';
+            document.getElementById("input_date").value = '';
+            document.getElementById("input_desc").value = '';
         }
+
 
 
         function create_tasktodo_task() {
