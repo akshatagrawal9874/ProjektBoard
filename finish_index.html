@@ -3,431 +3,516 @@
 
 <head>
 
-  <title> Projekt Board </title>
+    <title> Projekt Board </title>
 
-  <link rel="icon" href="to-do-list.png" type="image/png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="finish_task.css" type="text/css">
-  <link href="https://fonts.googleapis.com/css2?family=Karla&display=swap" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/6167bea25e.js" crossorigin="anonymous"></script>
-  <script src="./jqueryui/jquery.js"></script>
-  <script src="./jqueryui/jquery-ui.js"></script>
-  <script>
-    const draggables = document.querySelectorAll('.task_container')
-    const containers = document.querySelectorAll('.container')
+    <link rel="icon" href="to-do-list.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="finish_task.css" type="text/css">
+    <link rel="stylesheet" href="./css/auto.css" type="text/css">
+    <link rel="stylesheet" href="./css/auth.css">
 
-    draggables.forEach(draggable => {
-      task_container.addEventListener('dragstart', () => {
-        draggable.classList.add('dragging')
-      })
+    <link href="https://fonts.googleapis.com/css2?family=Karla&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/6167bea25e.js" crossorigin="anonymous"></script>
+    <script src="./jqueryui/jquery.js"></script>
+    <script src="./jqueryui/jquery-ui.js"></script>
+    <script>
+        const draggables = document.querySelectorAll('.task_container')
+        const containers = document.querySelectorAll('.container')
 
-      task_container.addEventListener('dragend', () => {
-        task_container.classList.remove('dragging')
-      })
-    })
+        draggables.forEach(draggable => {
+            task_container.addEventListener('dragstart', () => {
+                draggable.classList.add('dragging')
+            })
 
-    containers.forEach(container => {
-      container.addEventListener('dragover', e => {
-        e.preventDefault()
-        const afterElement = getDragAfterElement(container, e.clientY)
-        const draggable = document.querySelector('.dragging')
-        if (afterElement == null) {
-          container.appendChild(draggable)
-        } else {
-          container.insertBefore(draggable, afterElement)
+            task_container.addEventListener('dragend', () => {
+                task_container.classList.remove('dragging')
+            })
+        })
+
+        containers.forEach(container => {
+            container.addEventListener('dragover', e => {
+                e.preventDefault()
+                const afterElement = getDragAfterElement(container, e.clientY)
+                const draggable = document.querySelector('.dragging')
+                if (afterElement == null) {
+                    container.appendChild(draggable)
+                } else {
+                    container.insertBefore(draggable, afterElement)
+                }
+            })
+        })
+
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.task_container:not(.dragging)')]
+
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect()
+                const offset = y - box.top - box.height / 2
+                if (offset < 0 && offset > closest.offset) {
+                    return {
+                        offset: offset,
+                        element: child
+                    }
+                } else {
+                    return closest
+                }
+            }, {
+                offset: Number.NEGATIVE_INFINITY
+            }).element
         }
-      })
-    })
-
-    function getDragAfterElement(container, y) {
-      const draggableElements = [...container.querySelectorAll('.task_container:not(.dragging)')]
-
-      return draggableElements.reduce((closest, child) => {
-        const box = child.getBoundingClientRect()
-        const offset = y - box.top - box.height / 2
-        if (offset < 0 && offset > closest.offset) {
-          return { offset: offset, element: child }
-        } else {
-          return closest
-        }
-      }, { offset: Number.NEGATIVE_INFINITY }).element
-    }
-  </script>
+    </script>
 </head>
 
 
 <body onload="create_unfinished_task(), create_finished_task()">
 
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
 
-  <!--<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-auth.js"></script>-->
+    <!--<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-auth.js"></script>-->
 
-  <!--<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>-->
-  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+    <!--<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>-->
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
 
-  <!-- TODO: Add SDKs for Firebase products that you want to use
+    <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
 
-  <!-- TODO: Add SDKs for Firebase products that you want to use
+    <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script>
-    var firebaseConfig = {
-      apiKey: "AIzaSyASvw80DuelGaKx3v3NoK4eo13tT_C1Q7U",
-      authDomain: "dpprojekt-3d1fd.firebaseapp.com",
-      databaseURL: "https://dpprojekt-3d1fd.firebaseio.com",
-      projectId: "dpprojekt-3d1fd",
-      storageBucket: "dpprojekt-3d1fd.appspot.com",
-      messagingSenderId: "455950445352",
-      appId: "1:455950445352:web:c551266cc5d56e5ecd7e1d",
-      measurementId: "G-91EEZ5MBPF"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
-
-    function add_task() {
-      input_box = document.getElementById("input_box");
-      input_date = document.getElementById("input_date");
-      input_desc = document.getElementById("input_desc");
-      if (input_box.value.length != 0 && input_date.value.length != 0) {
-        // our boxes have data and we take database
-        var key = firebase.database().ref().child("unfinished_task").push().key;
-        var task = {
-          title: input_box.value,
-          date: input_date.value,
-          desc: input_desc.value,
-          key: key
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyASvw80DuelGaKx3v3NoK4eo13tT_C1Q7U",
+            authDomain: "dpprojekt-3d1fd.firebaseapp.com",
+            databaseURL: "https://dpprojekt-3d1fd.firebaseio.com",
+            projectId: "dpprojekt-3d1fd",
+            storageBucket: "dpprojekt-3d1fd.appspot.com",
+            messagingSenderId: "455950445352",
+            appId: "1:455950445352:web:c551266cc5d56e5ecd7e1d",
+            measurementId: "G-91EEZ5MBPF"
         };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
 
-        var updates = {};
-        updates["/unfinished_task/" + key] = task;
-        firebase.database().ref().update(updates);
-        create_unfinished_task();
-      }
-    }
+        function add_task() {
+            input_box = document.getElementById("input_box");
+            input_date = document.getElementById("input_date");
+            input_desc = document.getElementById("input_desc");
+            // ttd = document.getElementById('auto_drop').
+            // console.log(ttd)
+            if (input_box.value.length != 0 && input_date.value.length != 0) {
+                // our boxes have data and we take database
+                var key = firebase.database().ref().child("unfinished_task").push().key;
+                var task = {
+                    title: input_box.value,
+                    date: input_date.value,
+                    desc: input_desc.value,
+                    key: key
+                };
 
+                var updates = {};
+                updates["/unfinished_task/" + key] = task;
+                firebase.database().ref().update(updates);
+                create_unfinished_task();
 
-    function create_unfinished_task() {
-      unfinished_task_container = document.getElementsByClassName("container")[0];
-      unfinished_task_container.innerHTML = "";
-      task_array = [];
-      firebase.database().ref("unfinished_task").once('value', function (snapshot) {
-        snapshot.forEach(function (childSnapshot) {
-          var childKey = childSnapshot.key;
-          var childData = childSnapshot.val();
-          task_array.push(Object.values(childData));
-        });
+                input_box.value = "";
+                input_date.value = "";
+                input_desc.value = "";
 
-        for (var i, i = 0; i < task_array.length; i++) {
-          task_date = task_array[i][0];
-          task_desc = task_array[i][1];
-          task_key = task_array[i][2];
-          task_title = task_array[i][3];
-
-          task_container = document.createElement("div");
-          task_container.setAttribute("class", "task_container");
-          task_container.setAttribute("data-key", task_key);
-          task_container.setAttribute('draggable', true);
-
-          // TASK DATA
-          task_data = document.createElement('div');
-          task_data.setAttribute('id', 'task_data');
-
-          title = document.createElement('p');
-          title.setAttribute('id', 'task_title');
-          title.setAttribute('contenteditable', false);
-          title.innerHTML = task_title;
-
-          desc = document.createElement('p');
-          desc.setAttribute('id', 'task_title');
-          desc.setAttribute('contenteditable', false);
-          desc.innerHTML = task_desc;
-
-          date = document.createElement('p');
-          date.setAttribute('id', 'task_date');
-          date.setAttribute('contenteditable', false);
-          date.innerHTML = task_date;
-
-
-          // TASK TOOLS
-          task_tool = document.createElement('div');
-          task_tool.setAttribute('id', 'task_tool');
-
-          task_done_button = document.createElement('button');
-          task_done_button.setAttribute('id', 'task_done_button');
-          task_done_button.setAttribute('onclick', "task_done(this.parentElement.parentElement, this.parentElement)");
-
-          fa_done = document.createElement('i');
-          fa_done.setAttribute('class', 'fa fa-check');
-
-          task_edit_button = document.createElement('button');
-          task_edit_button.setAttribute('id', 'task_edit_button');
-          task_edit_button.setAttribute('onclick', "task_edit(this.parentElement.parentElement, this)");
-
-          fa_edit = document.createElement('i');
-          fa_edit.setAttribute('class', 'fa fa-pencil');
-
-          task_delete_button = document.createElement('button');
-          task_delete_button.setAttribute('id', 'task_delete_button');
-          task_delete_button.setAttribute('onclick', "task_delete(this.parentElement.parentElement)");
-
-          fa_delete = document.createElement('i');
-          fa_delete.setAttribute('class', 'fa fa-trash');
-
-          unfinished_task_container.append(task_container);
-          task_container.append(task_data);
-          task_data.append(title);
-          task_data.append(desc);
-          task_data.append(date);
-          
-          task_container.append(task_tool);
-          task_tool.append(task_done_button);
-          task_done_button.append(fa_done);
-          task_tool.append(task_edit_button);
-          task_edit_button.append(fa_edit);
-          task_tool.append(task_delete_button);
-          task_delete_button.append(fa_delete);
+            }
         }
-      });
-    }
-
-    function create_finished_task() {
-
-      finished_task_container = document.getElementsByClassName("container")[1];
-      finished_task_container.innerHTML = "";
-
-      finished_task_array = [];
-
-      firebase.database().ref("finished_task").once('value', function (snapshot) {
-        snapshot.forEach(function (childSnapshot) {
-          var childKey = childSnapshot.key;
-          var childData = childSnapshot.val();
-          finished_task_array.push(Object.values(childData));
-        });
-
-        for (var i, i = 0; i < finished_task_array.length; i++) {
-          task_date = finished_task_array[i][0];
-          task_desc = finished_task_array[i][1];
-          task_key = finished_task_array[i][2];
-          task_title = finished_task_array[i][3];
-         
-
-          task_container = document.createElement("div");
-          task_container.setAttribute("class", "task_container");
-          task_container.setAttribute("data-key", task_key);
-          task_container.setAttribute('draggable', true);
 
 
-          // TASK DATA
-          task_data = document.createElement('div');
-          task_data.setAttribute('id', 'task_data');
+        function create_unfinished_task() {
+            unfinished_task_container = document.getElementsByClassName("container")[0];
+            unfinished_task_container.innerHTML = "";
+            task_array = [];
+            firebase.database().ref("unfinished_task").once('value', function(snapshot) {
+                snapshot.forEach(function(childSnapshot) {
+                    var childKey = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    task_array.push(Object.values(childData));
+                });
 
-          title = document.createElement('p');
-          title.setAttribute('id', 'task_title');
-          title.setAttribute('contenteditable', false);
-          title.innerHTML = task_title;
+                for (var i, i = 0; i < task_array.length; i++) {
+                    task_date = task_array[i][0];
+                    task_desc = task_array[i][1];
+                    task_key = task_array[i][2];
+                    task_title = task_array[i][3];
 
-          desc = document.createElement('p');
-          desc.setAttribute('id', 'task_title');
-          desc.setAttribute('contenteditable', false);
-          desc.innerHTML = task_desc;
+                    task_container = document.createElement("div");
+                    task_container.setAttribute("class", "task_container");
+                    task_container.setAttribute("data-key", task_key);
+                    task_container.setAttribute('draggable', true);
 
-          date = document.createElement('p');
-          date.setAttribute('id', 'task_date');
-          date.setAttribute('contenteditable', false);
-          date.innerHTML = task_date;
+                    // TASK DATA
+                    task_data = document.createElement('div');
+                    task_data.setAttribute('id', 'task_data');
+
+                    title = document.createElement('p');
+                    title.setAttribute('id', 'task_title');
+                    title.setAttribute('contenteditable', false);
+                    title.innerHTML = task_title;
+
+                    desc = document.createElement('p');
+                    desc.setAttribute('id', 'task_title');
+                    desc.setAttribute('contenteditable', false);
+                    desc.innerHTML = task_desc;
+
+                    date = document.createElement('p');
+                    date.setAttribute('id', 'task_date');
+                    date.setAttribute('contenteditable', false);
+                    date.innerHTML = task_date;
 
 
-          // TASK TOOLS
-          task_tool = document.createElement('div');
-          task_tool.setAttribute('id', 'task_tool');
+                    // TASK TOOLS
+                    task_tool = document.createElement('div');
+                    task_tool.setAttribute('id', 'task_tool');
 
-          task_delete_button = document.createElement('button');
-          task_delete_button.setAttribute('id', 'task_delete_button');
-          task_delete_button.setAttribute('onclick', "task_finished_delete(this.parentElement.parentElement)");
-          fa_delete = document.createElement('i');
-          fa_delete.setAttribute('class', 'fa fa-trash');
+                    task_done_button = document.createElement('button');
+                    task_done_button.setAttribute('id', 'task_done_button');
+                    task_done_button.setAttribute('onclick', "task_done(this.parentElement.parentElement, this.parentElement)");
 
-          finished_task_container.append(task_container);
-          task_container.append(task_data);
-          task_data.append(title);
-          task_data.append(desc);
-          task_data.append(date);
-          
-          task_container.append(task_tool);
-          task_tool.append(task_delete_button);
-          task_delete_button.append(fa_delete);
+                    fa_done = document.createElement('i');
+                    fa_done.setAttribute('class', 'fa fa-check');
+
+                    task_edit_button = document.createElement('button');
+                    task_edit_button.setAttribute('id', 'task_edit_button');
+                    task_edit_button.setAttribute('onclick', "task_edit(this.parentElement.parentElement, this)");
+
+                    fa_edit = document.createElement('i');
+                    fa_edit.setAttribute('class', 'fa fa-pencil');
+
+                    task_delete_button = document.createElement('button');
+                    task_delete_button.setAttribute('id', 'task_delete_button');
+                    task_delete_button.setAttribute('onclick', "task_delete(this.parentElement.parentElement)");
+
+                    fa_delete = document.createElement('i');
+                    fa_delete.setAttribute('class', 'fa fa-trash');
+
+                    unfinished_task_container.append(task_container);
+                    task_container.append(task_data);
+                    task_data.append(title);
+                    task_data.append(desc);
+                    task_data.append(date);
+
+                    task_container.append(task_tool);
+                    task_tool.append(task_done_button);
+                    task_done_button.append(fa_done);
+                    task_tool.append(task_edit_button);
+                    task_edit_button.append(fa_edit);
+                    task_tool.append(task_delete_button);
+                    task_delete_button.append(fa_delete);
+                }
+            });
         }
-      });
-    }
 
-    function task_done(task, task_tool) {
-      finished_task_container = document.getElementsByClassName("container")[1];
-      task.removeChild(task_tool);
-      finished_task_container.append(task);
+        function create_finished_task() {
 
-      var key = task.getAttribute("data-key");
-      var task_obj = {
-        title: task.childNodes[0].childNodes[0].innerHTML,
-        desc: task.childNodes[0].childNodes[1].innerHTML,
-        date: task.childNodes[0].childNodes[2].innerHTML,
-        key: key
-      };
+            finished_task_container = document.getElementsByClassName("container")[1];
+            finished_task_container.innerHTML = "";
 
-      var updates = {};
-      updates["/finished_task/" + key] = task_obj;
-      firebase.database().ref().update(updates);
+            finished_task_array = [];
 
-      // delete our task from unfinished
-      task_delete(task);
-      create_finished_task();
-    }
+            firebase.database().ref("finished_task").once('value', function(snapshot) {
+                snapshot.forEach(function(childSnapshot) {
+                    var childKey = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    finished_task_array.push(Object.values(childData));
+                });
+
+                for (var i, i = 0; i < finished_task_array.length; i++) {
+                    task_date = finished_task_array[i][0];
+                    task_desc = finished_task_array[i][1];
+                    task_key = finished_task_array[i][2];
+                    task_title = finished_task_array[i][3];
 
 
-    function task_edit(task, edit_button) {
-      edit_button.setAttribute("id", "task_edit_button_editing");
-      edit_button.setAttribute("onclick", "finish_edit(this.parentElement.parentElement, this)");
-
-      title = task.childNodes[0].childNodes[0];
-      title.setAttribute("contenteditable", true);
-      title.setAttribute("id", "title_editing");
-      title.focus();
-
-      desc = task.childNodes[0].childNodes[1];
-      desc.setAttribute("contenteditable", true);
-      desc.setAttribute("id", "title_editing");
-      desc.focus();
-
-      date = task.childNodes[0].childNodes[2];
-      date.setAttribute("contenteditable", true);
-      date.setAttribute("id", "date_editing");
-
-    }
-
-    function finish_edit(task, edit_button) {
-      edit_button.setAttribute("id", "task_edit_button");
-      edit_button.setAttribute("onclick", "task_edit(this.parentElement.parentElement, this)");
-
-      title = task.childNodes[0].childNodes[0];
-      title.setAttribute("contenteditable", true);
-      title.setAttribute("id", "title_editing");
-      title.focus();
-
-      desc = task.childNodes[0].childNodes[1];
-      desc.setAttribute("contenteditable", true);
-      desc.setAttribute("id", "title_editing");
-      desc.focus();
-
-      date = task.childNodes[0].childNodes[2];
-      date.setAttribute("contenteditable", true);
-      date.setAttribute("id", "date_editing");
-
-     
-      // change in firebase to
-      var key = task.getAttribute("data-key");
-      var task_obj = {
-        title: task.childNodes[0].childNodes[0].innerHTML,
-        desc: task.childNodes[0].childNodes[1].innerHTML,
-        date: task.childNodes[0].childNodes[2].innerHTML,
-        key: key
-      };
-
-      var updates = {};
-      updates["/unfinished_task/" + key] = task_obj;
-      firebase.database().ref().update(updates);
-    }
+                    task_container = document.createElement("div");
+                    task_container.setAttribute("class", "task_container");
+                    task_container.setAttribute("data-key", task_key);
+                    task_container.setAttribute('draggable', true);
 
 
-    function task_delete(task) {
-      key = task.getAttribute("data-key");
-      task_to_remove = firebase.database().ref("unfinished_task/" + key);
-      task_to_remove.remove();
-      // remove from html view or whatevesss
-      task.remove();
-    }
+                    // TASK DATA
+                    task_data = document.createElement('div');
+                    task_data.setAttribute('id', 'task_data');
+
+                    title = document.createElement('p');
+                    title.setAttribute('id', 'task_title');
+                    title.setAttribute('contenteditable', false);
+                    title.innerHTML = task_title;
+
+                    desc = document.createElement('p');
+                    desc.setAttribute('id', 'task_title');
+                    desc.setAttribute('contenteditable', false);
+                    desc.innerHTML = task_desc;
+
+                    date = document.createElement('p');
+                    date.setAttribute('id', 'task_date');
+                    date.setAttribute('contenteditable', false);
+                    date.innerHTML = task_date;
 
 
-    function task_finished_delete(task) {
-      key = task.getAttribute("data-key");
-      task_to_remove = firebase.database().ref("finished_task/" + key);
-      task_to_remove.remove();
-      // remove from html view or whatevesss
-      task.remove();
-    }
-  </script>
-  <nav class="navigation-bar">
-    <div class="logo">
-      <h1>Projekt Board</h1>
-    </div>
-    <div class="user">
-      <div class="img-user">
-        <img src="/img/account_circle-24px.svg" alt="">
-      </div>
-      <div class="username">
-        <h4> User</h4>
-      </div>
-    </div>
-  </nav>
-  <div id="content_container">
+                    // TASK TOOLS
+                    task_tool = document.createElement('div');
+                    task_tool.setAttribute('id', 'task_tool');
 
-    <div id="task_input_container">
-      <input id="input_box" type="text" placeholder="Start A Task" />
-      <input type="text" placeholder="Enter Task Description" name="taskdField" id="input_desc">
-      <input id="input_date" type="date" />
-      <button id="input_button" onclick="add_task();">
-        Enter Task <i class="fa fa-arrow-circle-right"></i>
-      </button>
-    </div>
-  </div>
-  <div class="box">
-    <div class="box1">
-      <!-- Task To Do -->
-      <div class="heading">
-        <div class="image-pen">
-          <i class="fa fa-pencil" aria-hidden="true"></i>
+                    task_delete_button = document.createElement('button');
+                    task_delete_button.setAttribute('id', 'task_delete_button');
+                    task_delete_button.setAttribute('onclick', "task_finished_delete(this.parentElement.parentElement)");
+                    fa_delete = document.createElement('i');
+                    fa_delete.setAttribute('class', 'fa fa-trash');
+
+                    finished_task_container.append(task_container);
+                    task_container.append(task_data);
+                    task_data.append(title);
+                    task_data.append(desc);
+                    task_data.append(date);
+
+                    task_container.append(task_tool);
+                    task_tool.append(task_delete_button);
+                    task_delete_button.append(fa_delete);
+                }
+            });
+        }
+
+        function task_done(task, task_tool) {
+            finished_task_container = document.getElementsByClassName("container")[1];
+            task.removeChild(task_tool);
+            finished_task_container.append(task);
+
+            var key = task.getAttribute("data-key");
+            var task_obj = {
+                title: task.childNodes[0].childNodes[0].innerHTML,
+                desc: task.childNodes[0].childNodes[1].innerHTML,
+                date: task.childNodes[0].childNodes[2].innerHTML,
+                key: key
+            };
+
+            var updates = {};
+            updates["/finished_task/" + key] = task_obj;
+            firebase.database().ref().update(updates);
+
+            // delete our task from unfinished
+            task_delete(task);
+            create_finished_task();
+        }
+
+
+        function task_edit(task, edit_button) {
+            edit_button.setAttribute("id", "task_edit_button_editing");
+            edit_button.setAttribute("onclick", "finish_edit(this.parentElement.parentElement, this)");
+
+            title = task.childNodes[0].childNodes[0];
+            title.setAttribute("contenteditable", true);
+            title.setAttribute("id", "title_editing");
+            title.focus();
+
+            desc = task.childNodes[0].childNodes[1];
+            desc.setAttribute("contenteditable", true);
+            desc.setAttribute("id", "title_editing");
+            desc.focus();
+
+            date = task.childNodes[0].childNodes[2];
+            date.setAttribute("contenteditable", true);
+            date.setAttribute("id", "date_editing");
+
+        }
+
+        function finish_edit(task, edit_button) {
+            edit_button.setAttribute("id", "task_edit_button");
+            edit_button.setAttribute("onclick", "task_edit(this.parentElement.parentElement, this)");
+
+            title = task.childNodes[0].childNodes[0];
+            title.setAttribute("contenteditable", true);
+            title.setAttribute("id", "title_editing");
+            title.focus();
+
+            desc = task.childNodes[0].childNodes[1];
+            desc.setAttribute("contenteditable", true);
+            desc.setAttribute("id", "title_editing");
+            desc.focus();
+
+            date = task.childNodes[0].childNodes[2];
+            date.setAttribute("contenteditable", true);
+            date.setAttribute("id", "date_editing");
+
+
+            // change in firebase to
+            var key = task.getAttribute("data-key");
+            var task_obj = {
+                title: task.childNodes[0].childNodes[0].innerHTML,
+                desc: task.childNodes[0].childNodes[1].innerHTML,
+                date: task.childNodes[0].childNodes[2].innerHTML,
+                key: key
+            };
+
+            var updates = {};
+            updates["/unfinished_task/" + key] = task_obj;
+            firebase.database().ref().update(updates);
+        }
+
+
+        function task_delete(task) {
+            key = task.getAttribute("data-key");
+            task_to_remove = firebase.database().ref("unfinished_task/" + key);
+            task_to_remove.remove();
+            // remove from html view or whatevesss
+            task.remove();
+        }
+
+
+        function task_finished_delete(task) {
+            key = task.getAttribute("data-key");
+            task_to_remove = firebase.database().ref("finished_task/" + key);
+            task_to_remove.remove();
+            // remove from html view or whatevesss
+            task.remove();
+        }
+    </script>
+
+
+
+
+
+    <div id="modallogin" class="modal">
+
+        <div class="modal-content ">
+            <span onclick="document.getElementById('modallogin').style.display='none'" class="close" title="Close Modal">&times;</span>
+            <div class="buttons">
+                <button type="button " class="btn secondary " id="log-in-btn" onclick="togglestate(this)">Log In</button>
+                <button type="button " class="btn primary  " id="sign-up-btn" onclick="togglestate(this)">Sign Up</button>
+            </div>
+
+            <div id="loginbox">
+                <label for="email"></label>
+                <input type="email" placeholder="Enter Email" name="email" class="input" id="email-in" required>
+                <label for="psw"><label>
+                <input type="password" placeholder="Enter Password" name="pass" class="input" id="pass-in" required>
+                <div class="buttons-btm">
+                    <button type="submit" class="btn primary" id="log-in">Log In</button>
+                    <button class="psw btn secondary" id="pass-reset">Forgot password?</button>
+                </div>
+            </div>
+
+            <div id="signupbox" >
+                <input type="text" placeholder="Enter Name" name="name" class="input" id="name" >
+                <label for="email"></label>
+                <input type="email" placeholder="Enter Email" name="email" class="input" id="email-up" required>
+                <label for="file" style="margin: 0 2rem;"><b>Choose Profile Image:</b></label>
+                <input type="file" class="input" onchange="chooseFile(event)">
+                <label for="psw"></label>
+                <input type="password" placeholder="Enter Password" name="pass" class="input" id="pass-up" required>
+                <div class="buttons-btm">
+                    <button type="button " class="btn primary " id="sign-up">Sign Up</button>
+                    <button class=" btn secondary psw" id="verify-email">Send Verification Email</button>
+                </div>
+            </div>
+
+
         </div>
-        <p class="header"> TASKS TO DO </p>
-      </div>
-      <div class="container">
-
-      </div>
     </div>
 
-    <div class="box2">
-      <!-- Task Finished Yay -->
-      <div class="heading">
-        <div class="image-pen">
-          <i class="fa fa-pencil" aria-hidden="true"></i>
+
+
+
+    <div id="main-content">
+
+
+
+
+        <nav class="navigation-bar">
+            <div class="logo">
+                <h1>Projekt Board</h1>
+            </div>
+            <button class="btn primary" onclick="SignOut()">Log Out</button>
+            <div class="user">
+                <div class="img-user">
+                    <img id="img" src="/img/account_circle-24px.svg" alt="">
+                </div>
+                <div class="username">
+                    <h4> User</h4>
+                </div>
+            </div>
+        </nav>
+        <div id="content_container">
+
+            <div id="task_input_container">
+                <input id="input_box" type="text" placeholder="Start A Task" />
+                <input type="text" placeholder="Enter Task Description" name="taskdField" id="input_desc">
+                <input id="input_date" type="date" />
+                <!-- <button id="input_auto" class="hide" onclick="drop_select()"> 
+                    Default Column<i class="fa fa-arrow-circle-down"></i></button>
+                <div id="auto_drop">
+                    <input type="radio" class="auto_select" name="column" aria-selected="true">Tasks To Do</li>
+                    <hr>
+                    <input type="radio" class="auto_select" name="column">Accomplished</li>
+                </div> -->
+                <button id="input_button" onclick="add_task();">
+            Enter Task <i class="fa fa-arrow-circle-right"></i>
+          </button>
+            </div>
         </div>
-        <p class="header"> ACCOMPLISHED </p>
-      </div>
-      <div class="container">
-        <div class="task_container">
-          <div id="list-2">
-            <p id="task_title" contenteditable="false"> Task Title 1 </p>
-            <p id="task_date" contenteditable="false"> Task Date 1 </p>
-          </div>
-        </div>
-        <div class="task_container">
-          <div id="list-2">
-            <p id="task_title" contenteditable="false"> Task Title 1 </p>
-            <p id="task_date" contenteditable="false"> Task Date 1 </p>
-          </div>
+        <div class="box">
+            <div class="box1">
+                <!-- Task To Do -->
+                <div class="heading">
+                    <div class="image-pen">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </div>
+                    <p class="header"> TASKS TO DO </p>
+                </div>
+                <div class="container">
+
+                </div>
+            </div>
+
+            <div class="box2">
+                <!-- Task Finished Yay -->
+                <div class="heading">
+                    <div class="image-pen">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </div>
+                    <p class="header"> ACCOMPLISHED </p>
+                </div>
+                <div class="container">
+                    <div class="task_container">
+                        <div id="list-2">
+                            <p id="task_title" contenteditable="false"> Task Title 1 </p>
+                            <p id="task_date" contenteditable="false"> Task Date 1 </p>
+                        </div>
+                    </div>
+                    <div class="task_container">
+                        <div id="list-2">
+                            <p id="task_title" contenteditable="false"> Task Title 1 </p>
+                            <p id="task_date" contenteditable="false"> Task Date 1 </p>
+                        </div>
+                    </div>
+
+                    <div class="task_container">
+                        <div id="list-2">
+                            <p id="task_title" contenteditable="false"> Task Title 1 </p>
+                            <p id="task_date" contenteditable="false"> Task Date 1 </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="task_container">
-          <div id="list-2">
-            <p id="task_title" contenteditable="false"> Task Title 1 </p>
-            <p id="task_date" contenteditable="false"> Task Date 1 </p>
-          </div>
-        </div>
-      </div>
+
+
+
     </div>
-  </div>
+
+
+    <script src="./js/AppAuth.js"></script>
+    <script src="./js/AppTaskAuto.js"></script>
+    <!-- <script src="./finish_task.js"></script> -->
+
 </body>
 
 </html>

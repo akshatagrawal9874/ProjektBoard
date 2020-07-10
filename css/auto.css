@@ -1,0 +1,7 @@
+#auto_drop {
+    list-style: none;
+    visibility: collapse;
+    width: 260px;
+}
+
+.hide {}

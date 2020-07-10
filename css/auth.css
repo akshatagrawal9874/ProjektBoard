@@ -16,6 +16,10 @@
     border-bottom: none;
 }
 
+#main-content {
+    display: none;
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -66,15 +70,6 @@
     grid-template-columns: 1fr 1fr;
     margin-bottom: 2rem;
 }
-
-
-/* #loginbox.box,
-#signupbox.box {
-    width: fit-content;
-    border-radius: 1rem;
-    justify-content: center;
-    margin: 3rem auto 0;
-} */
 
 #loginbox {
     transition: display 0.3s, opacity 0.3s;

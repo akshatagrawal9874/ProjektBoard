@@ -1,6 +1,4 @@
-
-
-  var firebaseConfig = {
+var firebaseConfig = {
     apiKey: "AIzaSyASvw80DuelGaKx3v3NoK4eo13tT_C1Q7U",
     authDomain: "dpprojekt-3d1fd.firebaseapp.com",
     databaseURL: "https://dpprojekt-3d1fd.firebaseio.com",
@@ -16,44 +14,47 @@ firebase.analytics();
 
 
 
-  function add_task(){
+function add_task() {
 
     input_box = document.getElementById("input_box");
 
     input_date = document.getElementById("input_date");
 
 
-    if(input_box.value.length != 0 && input_date.value.length != 0){
+    if (input_box.value.length != 0 && input_date.value.length != 0) {
 
-      // our boxes have data and we take database
+        // our boxes have data and we take database
 
-      var key = firebase.database().ref().child("unfinished_task").push().key;
+        var key = firebase.database().ref().child("unfinished_task").push().key;
 
-      var task = {
+        var task = {
 
-        title: input_box.value,
+            title: input_box.value,
 
-        date: input_date.value,
+            date: input_date.value,
 
-        key: key
+            key: key
 
-      };
+        };
 
 
-      var updates = {};
+        var updates = {};
 
-      updates["/unfinished_task/" + key] = task;
+        updates["/unfinished_task/" + key] = task;
 
-      firebase.database().ref().update(updates);
+        firebase.database().ref().update(updates);
 
-      create_unfinished_task();
+        create_unfinished_task();
+
+
+
 
     }
 
-  }
+}
 
 
-  function create_unfinished_task(){
+function create_unfinished_task() {
 
     unfinished_task_container = document.getElementsByClassName("container")[0];
 
@@ -64,130 +65,130 @@ firebase.analytics();
 
     firebase.database().ref("unfinished_task").once('value', function(snapshot) {
 
-      snapshot.forEach(function(childSnapshot) {
+        snapshot.forEach(function(childSnapshot) {
 
-        var childKey = childSnapshot.key;
+            var childKey = childSnapshot.key;
 
-        var childData = childSnapshot.val();
+            var childData = childSnapshot.val();
 
-        task_array.push(Object.values(childData));
+            task_array.push(Object.values(childData));
 
-      });
+        });
 
-      for(var i, i = 0; i < task_array.length; i++){
+        for (var i, i = 0; i < task_array.length; i++) {
 
-        task_date = task_array[i][0];
+            task_date = task_array[i][0];
 
-        task_key = task_array[i][1];
+            task_key = task_array[i][1];
 
-        task_title = task_array[i][2];
-
-
-        task_container = document.createElement("div");
-
-        task_container.setAttribute("class", "task_container");
-
-        task_container.setAttribute("data-key", task_key);
+            task_title = task_array[i][2];
 
 
-        // TASK DATA
+            task_container = document.createElement("div");
 
-        task_data = document.createElement('div');
+            task_container.setAttribute("class", "task_container");
 
-        task_data.setAttribute('id', 'task_data');
-
-
-        title = document.createElement('p');
-
-        title.setAttribute('id', 'task_title');
-
-        title.setAttribute('contenteditable', false);
-
-        title.innerHTML = task_title;
+            task_container.setAttribute("data-key", task_key);
 
 
-        date = document.createElement('p');
+            // TASK DATA
 
-        date.setAttribute('id', 'task_date');
+            task_data = document.createElement('div');
 
-        date.setAttribute('contenteditable', false);
-
-        date.innerHTML = task_date;
+            task_data.setAttribute('id', 'task_data');
 
 
-        // TASK TOOLS
+            title = document.createElement('p');
 
-        task_tool = document.createElement('div');
+            title.setAttribute('id', 'task_title');
 
-        task_tool.setAttribute('id', 'task_tool');
+            title.setAttribute('contenteditable', false);
 
-
-        task_done_button = document.createElement('button');
-
-        task_done_button.setAttribute('id', 'task_done_button');
-
-        task_done_button.setAttribute('onclick', "task_done(this.parentElement.parentElement, this.parentElement)");
-
-        fa_done = document.createElement('i');
-
-        fa_done.setAttribute('class', 'fa fa-check');
+            title.innerHTML = task_title;
 
 
-        task_edit_button = document.createElement('button');
+            date = document.createElement('p');
 
-        task_edit_button.setAttribute('id', 'task_edit_button');
+            date.setAttribute('id', 'task_date');
 
-        task_edit_button.setAttribute('onclick', "task_edit(this.parentElement.parentElement, this)");
+            date.setAttribute('contenteditable', false);
 
-        fa_edit = document.createElement('i');
-
-        fa_edit.setAttribute('class', 'fa fa-pencil');
+            date.innerHTML = task_date;
 
 
-        task_delete_button = document.createElement('button');
+            // TASK TOOLS
 
-        task_delete_button.setAttribute('id', 'task_delete_button');
+            task_tool = document.createElement('div');
 
-        task_delete_button.setAttribute('onclick', "task_delete(this.parentElement.parentElement)");
-
-        fa_delete = document.createElement('i');
-
-        fa_delete.setAttribute('class', 'fa fa-trash');
+            task_tool.setAttribute('id', 'task_tool');
 
 
+            task_done_button = document.createElement('button');
 
-        unfinished_task_container.append(task_container);
+            task_done_button.setAttribute('id', 'task_done_button');
 
-        task_container.append(task_data);
+            task_done_button.setAttribute('onclick', "task_done(this.parentElement.parentElement, this.parentElement)");
 
-        task_data.append(title);
+            fa_done = document.createElement('i');
 
-        task_data.append(date);
+            fa_done.setAttribute('class', 'fa fa-check');
 
 
-        task_container.append(task_tool);
+            task_edit_button = document.createElement('button');
 
-        task_tool.append(task_done_button);
+            task_edit_button.setAttribute('id', 'task_edit_button');
 
-        task_done_button.append(fa_done);
+            task_edit_button.setAttribute('onclick', "task_edit(this.parentElement.parentElement, this)");
 
-        task_tool.append(task_edit_button);
+            fa_edit = document.createElement('i');
 
-        task_edit_button.append(fa_edit);
+            fa_edit.setAttribute('class', 'fa fa-pencil');
 
-        task_tool.append(task_delete_button);
 
-        task_delete_button.append(fa_delete);
+            task_delete_button = document.createElement('button');
 
-      }
+            task_delete_button.setAttribute('id', 'task_delete_button');
+
+            task_delete_button.setAttribute('onclick', "task_delete(this.parentElement.parentElement)");
+
+            fa_delete = document.createElement('i');
+
+            fa_delete.setAttribute('class', 'fa fa-trash');
+
+
+
+            unfinished_task_container.append(task_container);
+
+            task_container.append(task_data);
+
+            task_data.append(title);
+
+            task_data.append(date);
+
+
+            task_container.append(task_tool);
+
+            task_tool.append(task_done_button);
+
+            task_done_button.append(fa_done);
+
+            task_tool.append(task_edit_button);
+
+            task_edit_button.append(fa_edit);
+
+            task_tool.append(task_delete_button);
+
+            task_delete_button.append(fa_delete);
+
+        }
 
 
     });
 
 
-  }
+}
 
-  function create_finished_task(){
+function create_finished_task() {
 
 
     finished_task_container = document.getElementsByClassName("container")[1];
@@ -199,100 +200,100 @@ firebase.analytics();
 
     firebase.database().ref("finished_task").once('value', function(snapshot) {
 
-      snapshot.forEach(function(childSnapshot) {
+        snapshot.forEach(function(childSnapshot) {
 
-        var childKey = childSnapshot.key;
+            var childKey = childSnapshot.key;
 
-        var childData = childSnapshot.val();
+            var childData = childSnapshot.val();
 
-        finished_task_array.push(Object.values(childData));
+            finished_task_array.push(Object.values(childData));
 
-      });
+        });
 
-      for(var i, i = 0; i < finished_task_array.length; i++){
+        for (var i, i = 0; i < finished_task_array.length; i++) {
 
-        task_date = finished_task_array[i][0];
+            task_date = finished_task_array[i][0];
 
-        task_key = finished_task_array[i][1];
+            task_key = finished_task_array[i][1];
 
-        task_title = finished_task_array[i][2];
-
-
-        task_container = document.createElement("div");
-
-        task_container.setAttribute("class", "task_container");
-
-        task_container.setAttribute("data-key", task_key);
+            task_title = finished_task_array[i][2];
 
 
-        // TASK DATA
+            task_container = document.createElement("div");
 
-        task_data = document.createElement('div');
+            task_container.setAttribute("class", "task_container");
 
-        task_data.setAttribute('id', 'task_data');
-
-
-        title = document.createElement('p');
-
-        title.setAttribute('id', 'task_title');
-
-        title.setAttribute('contenteditable', false);
-
-        title.innerHTML = task_title;
+            task_container.setAttribute("data-key", task_key);
 
 
-        date = document.createElement('p');
+            // TASK DATA
 
-        date.setAttribute('id', 'task_date');
+            task_data = document.createElement('div');
 
-        date.setAttribute('contenteditable', false);
-
-        date.innerHTML = task_date;
+            task_data.setAttribute('id', 'task_data');
 
 
-        // TASK TOOLS
+            title = document.createElement('p');
 
-        task_tool = document.createElement('div');
+            title.setAttribute('id', 'task_title');
 
-        task_tool.setAttribute('id', 'task_tool');
+            title.setAttribute('contenteditable', false);
 
-
-        task_delete_button = document.createElement('button');
-
-        task_delete_button.setAttribute('id', 'task_delete_button');
-
-        task_delete_button.setAttribute('onclick', "task_finished_delete(this.parentElement.parentElement)");
-
-        fa_delete = document.createElement('i');
-
-        fa_delete.setAttribute('class', 'fa fa-trash');
+            title.innerHTML = task_title;
 
 
-        finished_task_container.append(task_container);
+            date = document.createElement('p');
 
-        task_container.append(task_data);
+            date.setAttribute('id', 'task_date');
 
-        task_data.append(title);
+            date.setAttribute('contenteditable', false);
 
-        task_data.append(date);
+            date.innerHTML = task_date;
 
 
-        task_container.append(task_tool);
+            // TASK TOOLS
 
-        task_tool.append(task_delete_button);
+            task_tool = document.createElement('div');
 
-        task_delete_button.append(fa_delete);
+            task_tool.setAttribute('id', 'task_tool');
 
-      }
+
+            task_delete_button = document.createElement('button');
+
+            task_delete_button.setAttribute('id', 'task_delete_button');
+
+            task_delete_button.setAttribute('onclick', "task_finished_delete(this.parentElement.parentElement)");
+
+            fa_delete = document.createElement('i');
+
+            fa_delete.setAttribute('class', 'fa fa-trash');
+
+
+            finished_task_container.append(task_container);
+
+            task_container.append(task_data);
+
+            task_data.append(title);
+
+            task_data.append(date);
+
+
+            task_container.append(task_tool);
+
+            task_tool.append(task_delete_button);
+
+            task_delete_button.append(fa_delete);
+
+        }
 
 
     });
 
 
-  }
+}
 
 
-  function task_done(task, task_tool){
+function task_done(task, task_tool) {
 
     finished_task_container = document.getElementsByClassName("container")[1];
 
@@ -305,11 +306,11 @@ firebase.analytics();
 
     var task_obj = {
 
-      title: task.childNodes[0].childNodes[0].innerHTML,
+        title: task.childNodes[0].childNodes[0].innerHTML,
 
-      date: task.childNodes[0].childNodes[1].innerHTML,
+        date: task.childNodes[0].childNodes[1].innerHTML,
 
-      key: key
+        key: key
 
     };
 
@@ -327,10 +328,10 @@ firebase.analytics();
 
     create_finished_task();
 
-  }
+}
 
 
-  function task_edit(task, edit_button){
+function task_edit(task, edit_button) {
 
     edit_button.setAttribute("id", "task_edit_button_editing");
 
@@ -353,9 +354,9 @@ firebase.analytics();
     date.setAttribute("id", "date_editing");
 
 
-  }
+}
 
-  function finish_edit(task, edit_button){
+function finish_edit(task, edit_button) {
 
     edit_button.setAttribute("id", "task_edit_button");
 
@@ -382,11 +383,11 @@ firebase.analytics();
 
     var task_obj = {
 
-      title: task.childNodes[0].childNodes[0].innerHTML,
+        title: task.childNodes[0].childNodes[0].innerHTML,
 
-      date: task.childNodes[0].childNodes[1].innerHTML,
+        date: task.childNodes[0].childNodes[1].innerHTML,
 
-      key: key
+        key: key
 
     };
 
@@ -398,10 +399,10 @@ firebase.analytics();
     firebase.database().ref().update(updates);
 
 
-  }
+}
 
 
-  function task_delete(task){
+function task_delete(task) {
 
     key = task.getAttribute("data-key");
 
@@ -415,10 +416,10 @@ firebase.analytics();
     task.remove();
 
 
-  }
+}
 
 
-  function task_finished_delete(task){
+function task_finished_delete(task) {
 
     key = task.getAttribute("data-key");
 
@@ -432,4 +433,4 @@ firebase.analytics();
     task.remove();
 
 
-  }
+}
