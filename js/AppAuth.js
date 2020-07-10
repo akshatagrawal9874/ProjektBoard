@@ -83,12 +83,7 @@ function toggleSignIn() {
 }
 
 //image file into storage
-let file = {};
 
-function chooseFile(e) {
-    file = e.target.files[0];
-
-}
 
 
 function SignOut() {
@@ -101,6 +96,13 @@ function SignOut() {
     }).catch(function(error) {
         console.log(error);
     });
+
+}
+
+let file = {};
+
+function chooseFile(e) {
+    file = e.target.files[0];
 
 }
 
@@ -122,9 +124,12 @@ function handleSignUp() {
     // [START createwithemail]
     firebase.auth().createUserWithEmailAndPassword(email, pass)
         .then(auth => {
+            console.log(auth.user.uid);
             firebase.storage().ref('user/' + auth.user.uid + '/profile.jpg').put(file).then(function() {
                 console.log("uploaded");
-            })
+            }).catch(function(error) {
+                console.log(error)
+            });
         })
         .catch(function(error) {
             // Handle Errors here.
@@ -196,17 +201,18 @@ function sendPasswordReset() {
 // })
 
 function initApp() {
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(function(auth) {
         // var modal = document.getElementById('modallogin');
-        if (user) {
+        if (auth) {
             let main = document.getElementById("main-content");
             let img = document.getElementById('img');
-            var displayName = user.displayName;
-            var email = user.email;
-            console.log(email, displayName)
+            // var displayName = user.displayName;
+            // var email = user.email;
+            // console.log(email, displayName)
             main.style.display = "unset";
             document.getElementById('modallogin').style.display = "none ";
-            firebase.storage().ref('user/' + user.uid + '/profile.jpg').getDownloadURL().then(imgUrl => {
+
+            firebase.storage().ref('user/' + auth.uid + '/profile.jpg').getDownloadURL().then(imgUrl => {
                 img.src = imgUrl;
             })
 
